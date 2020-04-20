@@ -57,16 +57,16 @@ class ClassroomController extends Controller
             $result = $this->classroom->count();
 
             if ($result > 0) {   
-                foreach ($this->classroom->all() as $classroom) {
+                /* foreach ($this->classroom->all() as $classroom) {
                     $classroom->delete();
-                }
+                } */
+                $this->classroom->where('id', '>', 0)->delete();
             }
 
             for ($i = 1; $i <= $numClassroom; $i++) {
                 $result = $this->classroom->create([
                     'id' => $i,
                     'classroom' => 'Sala ' . $i,
-                    'first_order' => false
                 ]);
             }
 

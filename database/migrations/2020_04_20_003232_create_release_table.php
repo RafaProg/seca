@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInternshipsTable extends Migration
+class CreateReleaseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateInternshipsTable extends Migration
      */
     public function up()
     {
-        Schema::create('internships', function (Blueprint $table) {
+        Schema::create('release', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('classroom_id');
-            $table->boolean('is_in_internship');
+            $table->integer('release_order');
+
             $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateInternshipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('internships');
+        Schema::dropIfExists('release');
     }
 }
