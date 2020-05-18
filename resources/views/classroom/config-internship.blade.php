@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="row" id="jq_load_classroom_internship">
-<form action="{{ route('classroom.store-config-internship') }}" method="POST" style="overflow-y: scroll; height: 520px;">
+<form action="{{ route('classroom.store-config-internship') }}" method="POST" style="overflow-y: scroll; height: 450px;">
     @csrf
     @forelse ($classrooms as $classroom)
       <div class="col-lg-3 col-xs-6">
@@ -22,11 +22,6 @@
             <label for="">
             <input type="checkbox" name="{{ str_replace(' ', '', $classroom->classroom) }}" value="{{ $classroom->id }}" @isset($classroom->internship) checked @endisset>
               Em estágio
-            </label>
-            <br>
-            <label for="">
-            <input type="radio" name="firstOrder" value="{{ $classroom->id }}" @if($classroom->internship['first_order'] == true) checked @endif>
-              Primeira liberação
             </label>
           </div>
           <div class="icon box-body">
@@ -42,7 +37,7 @@
     @isset($classrooms)
         <div class="col-xs-offset-9">
           <button id="atualizar" type="submit" class="btn btn-primary btn-lg" disabled>Atualizar</button>
-          <button id="excluir" type="" class="btn btn-danger btn-lg" disabled>Excluir Ordem</button>
+          <a id="excluir" href="{{ route('classroom.clear-config-internship') }}" class="btn btn-danger btn-lg" disabled>Excluir Ordem</a>
         </div>
     @endisset
     </form>

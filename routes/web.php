@@ -21,5 +21,6 @@ Route::namespace('Classroom')->prefix('classrooms')->group(function () {
         Route::put('/classrooms/config-release-update', 'ClassroomController@updateRelease')->name('config-release-update');
         Route::get('/config-internship', 'ClassroomController@showConfigInternship')->name('config-internship');
         Route::post('/store-config-internship', 'ClassroomController@storeConfigInternship')->name('store-config-internship');
+        Route::get('/clear-config-internship', 'ClassroomController@clearConfigInternship')->name('clear-config-internship');
     });
 });

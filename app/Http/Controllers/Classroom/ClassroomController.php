@@ -162,35 +162,28 @@ class ClassroomController extends Controller
 
             if (count($classrooms) > 0) {
                 foreach ($classrooms as $key => $classroom) {
-                    if (!($key == 'firstOrder')) {
-                        $this->classroom->find($classroom)->internship()->updateOrCreate(
-                            [ 'classroom_id'     => $classroom ],
-                            [
-                                'is_in_internship' => true,
-                                'first_order'      => false 
-                            ]
-                        );
-                    }
-
-                    if ($key == 'firstOrder'
-                        &&
-                        !($internship->where('classroom_id', $classroom)->first()->first_order == 1)
-                        ) {
-                        $internship->where('classroom_id', $classroom)->update([ 
-                            'is_in_internship' => true,
-                            'first_order' => true
-                        ]);
-                    }
+                    $this->classroom->find($classroom)->internship()->updateOrCreate(
+                        [ 'classroom_id' => $classroom ],
+                        [
+                            'is_in_internship' => true
+                        ]
+                    );
                 }
 
                 return redirect()->route('classroom.config-internship');
             } else {
                 return 'Mostrar mensagem de validação!';
             }
-
-            //return response()->json($request->all());
         } catch (Exception $e) {
             $e->getMessage();
         }
+    }
+
+    public function clearConfigInternship()
+    {
+        $internship = new Internship();
+        $internship->truncate();
+
+        return redirect()->route('classroom.config-internship');
     }
 }
