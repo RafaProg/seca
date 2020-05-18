@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReleaseTable extends Migration
+class CreateReleasesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateReleaseTable extends Migration
      */
     public function up()
     {
-        Schema::create('release', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('releases', function (Blueprint $table) {
+            $table->unsignedBigInteger('id');
             $table->unsignedBigInteger('classroom_id');
             $table->integer('release_order');
 
+            $table->primary('id');
             $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
             
             $table->timestamps();

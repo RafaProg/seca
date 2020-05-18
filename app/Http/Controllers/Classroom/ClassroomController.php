@@ -7,15 +7,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ClassroomRequest;
 use App\Model\Classroom;
 use App\Model\Internship;
+use App\Model\Release;
 use Exception;
 
 class ClassroomController extends Controller
 {
     private $classroom;
+    private $release;
 
-    public function __construct(Classroom $classroom)
+    public function __construct(Classroom $classroom, Release $release)
     {
         $this->classroom = $classroom;
+        $this->release = $release;
     }
     /**
      * Display a listing of the resource.
@@ -55,18 +58,20 @@ class ClassroomController extends Controller
             $numClassroom = $request->numberClassroom;
             
             $result = $this->classroom->count();
-
+            
             if ($result > 0) {   
-                /* foreach ($this->classroom->all() as $classroom) {
-                    $classroom->delete();
-                } */
                 $this->classroom->where('id', '>', 0)->delete();
             }
 
             for ($i = 1; $i <= $numClassroom; $i++) {
                 $result = $this->classroom->create([
                     'id' => $i,
-                    'classroom' => 'Sala ' . $i,
+                    'classroom' => 'sala ' . $i,
+                ]);
+                
+                $result = $this->classroom->where('id', $i)->first()->release()->create([
+                    'id' => $i,
+                    'release_order' => $i,
                 ]);
             }
 
@@ -76,41 +81,48 @@ class ClassroomController extends Controller
         }
     }
 
+    /**
+     * Show the view for configuration release order.
+     */
     public function showConfigReleaseClassroom()
     {
-        try {
-            $classroom = $this->classroom->where('first_order', true)->first();
+        try {   
+            $releases = $this->release->orderBy('release_order', 'asc')->with('classroom')->get();
             
-            if (!$classroom) {
-                $classroom = "Não há ordem de liberação previamente configurada.";
-            }
-            
-            $date = date('d/m/Y');
-
-            return view('classroom.config-release', compact('classroom', 'date'));
+            return view('classroom.test-config-release', compact('releases'));
         } catch (Exception $e) {
             return $e->getMessage();
         }
 
     }
 
+    /**
+     * update configuration release order.
+     */
     public function updateRelease(Request $request){
         try {
-            $oldClassroom =  $this->classroom->where('first_order', true)->first();
+            $classrooms = $request->classrooms;
             
-            if ($oldClassroom) {
-                $oldClassroom->update(['first_order' => false]);
+            if (!$classrooms) {
+                return redirect()->route('classroom.config-release');
             }
 
-            $classroom = $request->numberClassroom;
-            $classroom = 'Sala ' . $classroom;
-
-            $classroom = $this->classroom->where('classroom', $classroom)->first();
+            $classrooms = json_decode($classrooms);
             
-            if ($classroom) {
-                $classroom->update(['first_order' => true]);
-            } else {
-                //
+            if (is_array($classrooms) || is_object($classrooms)) {
+                if (count($classrooms) === $this->classroom->count()) {
+                    foreach ($classrooms as $classroom) {
+                        $classroom->classroom = mb_substr(ucfirst($classroom->classroom), 0, 4) . 
+                                                ' ' . mb_substr($classroom->classroom, 4);
+    
+                        $cr = $this->classroom->where('classroom', $classroom->classroom)
+                                                                ->with('release')->first();
+    
+                        $cr->release->update([
+                            'release_order' => $classroom->newPosition
+                        ]);
+                    }
+                }
             }
 
             return redirect()->route('classroom.config-release');

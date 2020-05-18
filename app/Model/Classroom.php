@@ -8,12 +8,16 @@ class Classroom extends Model
 {
     protected $fillable = [
         'id',
-        'classroom',
-        'first_order'
+        'classroom'
     ];
 
     public function internship()
     {
         return $this->hasOne(Internship::class);
+    }
+
+    public function release()
+    {
+        return $this->hasOne(Release::class);
     }
 }

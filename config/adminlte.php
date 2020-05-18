@@ -142,7 +142,7 @@ return [
                     'url'     => 'classrooms/create',
                 ],
                 [
-                    'text' => 'Confg. Ordem de Liberação',
+                    'text' => 'Ordem de Liberação',
                     'url'  => 'classrooms/config-release',
                 ],
                 [

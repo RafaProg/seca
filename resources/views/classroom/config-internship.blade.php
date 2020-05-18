@@ -49,5 +49,5 @@
 @stop
 
 @push('js')
-  <script src="{{ asset('js/loadclassroominternship.js') }}"></script>
+  <script src="{{ asset('js/load-classroom-internship.js') }}"></script>
 @endpush

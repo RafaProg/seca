@@ -5,28 +5,56 @@
 @section('content')
 <div class="box box-success">
     <div class="box-header with-border">
-      <h3 class="box-title">Ordem de Liberação do Dia</h3>
+      <h3 class="box-title">Configuração da Ordem de Liberação</h3>
     </div>
-    <!-- /.box-header -->
-    <!-- form start -->
+    
   <form role="form" action="{{ route('classroom.config-release-update') }}" method="POST">
     {{ csrf_field() }}
     {{ method_field('put') }}
-    <div class="box-body">
-    <div class="input-group">
-      <span class="input-group-addon"><i class="far fa-calendar-alt"></i></span>
-    <input type="text" value="{{ $date }}" readonly class="form-control">
-    </div>
-    </div>
-    <div class="box-body">
-        <div class="form-group">
-          <label for="firstClassroomRelease">Primeira Sala:</label>
-        <input type="number" name="numberClassroom" value="{{ isset($classroom->classroom) ? mb_substr($classroom->classroom, 5) : '' }}" class="form-control" id="firstClassroomRelease" min="1" placeholder="{{ isset($classroom->classroom) ? '' : 'Não existe uma ordem de liberação previamente configurada!' }}">
+    
+    <div class="col-xs-12">
+      <div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-hover">
+            <tbody><tr>
+              <th>Salas</th>
+              <th>Turma</th>
+              <th>Curso</th>
+              <th>Ordem de Liberação</th>
+              <th>Reordenar Liberação</th>
+            </tr>
+
+            @forelse ($classrooms as $classroom)
+              <tr>
+                <td>{{ ucfirst($classroom->classroom) }}</td>
+                <td>colocar</td>
+                <td>colocar</td>
+                <td>{{ $classroom->release->release_order }}</td>
+                <td>
+                  <select name="" class="form-control">
+                    <option selected style="color: rgb(189, 195, 199)" >Selecionar nova ordem</option>
+                    @for($i = 1; $i <= count($classrooms); $i++)
+                      <option value="{{ $i }}">{{ $i }}</option>
+                    @endfor
+                  </select>
+                </td>
+              </tr>
+            @empty
+                <h3>Não há salas cadastradas!</h3>
+            @endforelse
+
+          </tbody></table>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
     </div>
 
-    <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Salvar</button>
-    </div>
+      <div class="box-footer">
+          <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
     </form>
+    
   </div>
 @stop
