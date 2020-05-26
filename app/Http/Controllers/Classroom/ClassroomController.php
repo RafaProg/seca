@@ -89,7 +89,7 @@ class ClassroomController extends Controller
         try {   
             $releases = $this->release->orderBy('release_order', 'asc')->with('classroom')->get();
             
-            return view('classroom.test-config-release', compact('releases'));
+            return view('classroom.config-release', compact('releases'));
         } catch (Exception $e) {
             return $e->getMessage();
         }

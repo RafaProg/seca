@@ -24,7 +24,7 @@ $( () =>  {
                 
                 if (nameRoom === id) {
                     $('tbody tr').each((index2, element2) => {  
-                        element2.children[4].innerHTML = '<b>' + (index2 + 1) + '</b>';
+                        element2.children[4].innerHTML = '<span class="badge bg-green">' + (index2 + 1) + '</span>';
                         
                         classrooms.push({
                             classroom:   element2.children[0].innerText.replace(' ', '').toLowerCase(),
