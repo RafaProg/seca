@@ -24,3 +24,16 @@ Route::namespace('Classroom')->prefix('classrooms')->group(function () {
         Route::get('/clear-config-internship', 'ClassroomController@clearConfigInternship')->name('clear-config-internship');
     });
 });
+
+Route::get('teste', function () {
+    
+    $release = \App\Model\Release::all();
+
+    $release->map(function ($item) use ($release) {
+        $item->release_order -= 1;
+        if ($item->release_order == 0) $item->release_order = $release->count();
+        return $item;
+    });
+
+    dd([$release]);
+});
