@@ -12,9 +12,9 @@
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/painel', 'HomeController@index')->name('painel');
 
-Route::namespace('Classroom')->prefix('classrooms')->group(function () {
+Route::namespace('Classroom')->middleware('auth')->prefix('classrooms')->group(function () {
     Route::name('classroom.')->group(function () {
         Route::resource('/', 'ClassroomController');
         Route::get('/config-release', 'ClassroomController@showConfigReleaseClassroom')->name('config-release');
@@ -25,15 +25,16 @@ Route::namespace('Classroom')->prefix('classrooms')->group(function () {
     });
 });
 
-Route::get('teste', function () {
-    
-    $release = \App\Model\Release::all();
-
-    $release->map(function ($item) use ($release) {
-        $item->release_order -= 1;
-        if ($item->release_order == 0) $item->release_order = $release->count();
-        return $item;
+Route::namespace('Release')->middleware('auth')->prefix('release-times')->group(function () {
+    Route::name('releasetime.')->group(function () {
+        Route::get('/', 'ReleaseTimeController@createReleaseTime')->name('config-time');
+        Route::post('/add-release-time', 'ReleaseTimeController@storeReleaseTime')->name('store-time');
+        Route::post('/interval-between-release', 'ReleaseTimeController@storeBetweenRelease')->name('store-betweenrelese');
+        Route::delete('/delete-release-time/{id}', 'ReleaseTimeController@deleteReleaseTime')->name('delete-time');
     });
+});
 
-    dd([$release]);
+Route::get('/teste', function() {
+    $view = view('classroom.index');
+    dd((string) $view);
 });

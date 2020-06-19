@@ -28,8 +28,8 @@ class Kernel extends ConsoleKernel
     {
         foreach (ReleaseTime::all() as $time) {
             $schedule->call(new AutomaticRelease($time))
-            ->weekdays()
-            ->dailyAt($time->release_time);
+                ->weekdays()
+                ->dailyAt($time->release_time);
         }
 
     }

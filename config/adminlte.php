@@ -136,18 +136,34 @@ return [
                 [
                     'text' => 'Acompanhamento',
                     'url'  => 'classrooms/',
+                    'icon' => 'fas fa-desktop',
                 ],
                 [
                     'text'    => 'Cadastrar Salas',
                     'url'     => 'classrooms/create',
+                    'icon'    => 'fas fa-save',
                 ],
                 [
                     'text' => 'Ordem de Liberação',
                     'url'  => 'classrooms/config-release',
+                    'icon' => 'fas fa-sort-amount-up',
                 ],
                 [
                     'text' => 'Turmas em Estágio',
                     'url'  => 'classrooms/config-internship',
+                    'icon' => 'fas fa-briefcase',
+                ],
+            ],
+        ],
+        ['header' => 'Gerenciamento de Horários'],
+        [
+            'text'    => 'Configuração de Tempo',
+            'icon'    => 'fas fa-history',
+            'submenu' => [
+                [
+                    'text' => 'Horários de Liberação',
+                    'url'  => 'release-times/',
+                    'icon' => 'fas fa-stopwatch',
                 ],
             ],
         ],

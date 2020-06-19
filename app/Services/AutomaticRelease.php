@@ -5,25 +5,28 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use App\Model\Release;
 use App\Model\ReleaseTime;
+use Illuminate\Support\Facades\Storage;
 
 class AutomaticRelease
 {
     private $client;
     private $release;
     private $releaseTime;
+    private $interval;
 
     public function __construct(ReleaseTime $releaseTime)
     {
         $this->releaseTime = $releaseTime;
         $this->release = new Release();
         $this->client = new Client();
+        $this->interval = (int) Storage::get('/timeinterval/timeinterval.txt');
     }
 
     public function __invoke()
     {
         $this->releaseClassroomsSequence();
 
-        if(!$this->releaseTime->release_in_sequence) {
+        if (!$this->releaseTime->release_in_sequence) {
             $this->reoderReleaseClassrooms();
         }
     }
@@ -34,7 +37,7 @@ class AutomaticRelease
             $this->sendMessage($release->classroom_id);
 
             if ($this->releaseTime->release_in_sequence) {
-                sleep(1);
+                sleep($this->interval);
             }
         }
     }
@@ -56,10 +59,10 @@ class AutomaticRelease
         $release->map(function ($item) use ($release) {
             $item->release_order -= 1;
             if ($item->release_order == 0) $item->release_order = $release->count();
-            
+
             // update time
             $item->save();
-            
+
             return $item;
         });
     }
