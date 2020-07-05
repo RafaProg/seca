@@ -155,10 +155,14 @@ return [
                 ],
             ],
         ],
-        ['header' => 'Gerenciamento de Horários'],
+        [
+            'header' => 'Gerenciamento de Horários',
+            'can'     => 'isControllerOrAdmin',
+        ],
         [
             'text'    => 'Configuração de Tempo',
             'icon'    => 'fas fa-history',
+            'can'     => 'isControllerOrAdmin',
             'submenu' => [
                 [
                     'text' => 'Horários de Liberação',
@@ -173,36 +177,13 @@ return [
             'icon'    => 'fas fa-fw fa-user',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Usuários',
+                    'url'  => 'users',
                 ],
                 [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Cadastrar Usuário',
+                    'url'  => 'users/create',
+                    'can'  => 'isAdministrator',
                 ],
             ],
         ],
